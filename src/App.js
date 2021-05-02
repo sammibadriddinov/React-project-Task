@@ -20,6 +20,7 @@ function App() {
     } else if (name && isEditing) {
       // edit
     } else {
+      showAlert(true, "success", "Заметка было добавлено успешно");
       const newItem = { id: new Date().getTime().toString(), title: name };
       setList([...list, newItem]);
       setName("");
@@ -27,6 +28,10 @@ function App() {
   };
   const showAlert = (show = false, type = "", msg = "") => {
     setAlert({ show, type, msg });
+  };
+  const clearList = () => {
+    showAlert(true, "danger", "Заметка было полностью очищена");
+    setList([]);
   };
   return (
     <section className="section-center">
@@ -49,7 +54,9 @@ function App() {
       {list.length > 0 && (
         <div className="grocery-container">
           <List items={list} />
-          <button className="clear-btn">Очистить</button>
+          <button onClick={clearList} className="clear-btn">
+            Очистить
+          </button>
         </div>
       )}
     </section>
