@@ -33,6 +33,10 @@ function App() {
     showAlert(true, "danger", "Заметка было полностью очищена");
     setList([]);
   };
+  const removeItem = (id) => {
+    showAlert(true, "danger", "Заметка было удалено");
+    setList(list.filter((item) => item.id !== id));
+  };
   return (
     <section className="section-center">
       <form className="grocery-form" onSubmit={handleSubmit}>
@@ -53,7 +57,7 @@ function App() {
       </form>
       {list.length > 0 && (
         <div className="grocery-container">
-          <List items={list} />
+          <List items={list} removeItem={removeItem} />
           <button onClick={clearList} className="clear-btn">
             Очистить
           </button>
