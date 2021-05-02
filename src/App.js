@@ -19,6 +19,18 @@ function App() {
       showAlert(true, "danger", "Пожалуйста заполните форму");
     } else if (name && isEditing) {
       // edit
+      setList(
+        list.map((item) => {
+          if (item.id === editID) {
+            return { ...item, title: name };
+          }
+          return item;
+        })
+      );
+      setName("");
+      setEditID(null);
+      setIsEditing(false);
+      showAlert(true, "success", "Успешно было изменено");
     } else {
       showAlert(true, "success", "Заметка было добавлено успешно");
       const newItem = { id: new Date().getTime().toString(), title: name };
@@ -37,10 +49,16 @@ function App() {
     showAlert(true, "danger", "Заметка было удалено");
     setList(list.filter((item) => item.id !== id));
   };
+  const editItem = (id) => {
+    const specificItem = list.find((item) => item.id === id);
+    setIsEditing(true);
+    setEditID(id);
+    setName(specificItem.title);
+  };
   return (
     <section className="section-center">
       <form className="grocery-form" onSubmit={handleSubmit}>
-        {alert.show && <Alert {...alert} removeAlert={showAlert} />}
+        {alert.show && <Alert {...alert} removeAlert={showAlert} list={list} />}
         <h3>Список Заметки</h3>
         <div className="form-control">
           <input
@@ -57,7 +75,7 @@ function App() {
       </form>
       {list.length > 0 && (
         <div className="grocery-container">
-          <List items={list} removeItem={removeItem} />
+          <List items={list} removeItem={removeItem} editItem={editItem} />
           <button onClick={clearList} className="clear-btn">
             Очистить
           </button>
